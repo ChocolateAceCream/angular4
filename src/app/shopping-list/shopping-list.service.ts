@@ -22,4 +22,14 @@ export class ShoppingListService {
         //once the data changed, emit a copy of updated ingredients aray
     }
 
+    addIngredients(ingredient: Ingredient[]){
+        //on options is to use for loop and addIngredient method
+        //for (let ingredient of ingredients) {
+        //      this.addIngredient(ingredient);
+        //  }
+        //this will emit alot of unnessary event
+        this.ingredients.push(...ingredient);//use spread operator to spread the ingredients array into single ingredient
+        this.ingredientsChanged.emit(this.ingredients.slice());
+    }
+
 }
