@@ -41,6 +41,10 @@ export class RecipeService {
         return this.recipes.slice();
         //now we are not able to modify the recipes stored here from outside.
     }
+    getRecipe(index: number) {
+        //return a recipe by the index number
+        return this.recipes[index];
+    }
 
     addIngredientsToShoppingList(ingredients: Ingredient[]){
           this.shoppingListService.addIngredients(ingredients);
