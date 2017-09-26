@@ -1,11 +1,12 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService} from '../shopping-list/shopping-list.service';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
-    recipeSelected = new EventEmitter<Recipe>();//public method, hold Recipe type of data
+    //recipeSelected = new EventEmitter<Recipe>();//public method, hold Recipe ddtype of data
     private recipes: Recipe[] = [
         new Recipe(
             'test recipe 1',
@@ -21,7 +22,7 @@ export class RecipeService {
             'this is a simply test',
             'https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/recipe-image-legacy-id--51643_11.jpg?itok=I_hF8vFL',
             [
-                new Ingredient('Meat',1),
+                new Ingredient('Meat',3),
                 new Ingredient('French Fries',1)
             ]
         )
