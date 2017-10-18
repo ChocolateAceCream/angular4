@@ -7,6 +7,13 @@ export class ShoppingListService {
     //service, when we modify the ingredient array, we actually modify the copy
     //therefore, in order to reflect the data update from original array, we
     //need to emit a event to notice the service for data update.
+    //
+
+    //add this startedEditing service to create an object that can be listened
+    //in shopping-list onEdit method
+    startedEditting = new Subject<(number)>();
+    //subject is a generic type which will hold a number at the end
+
     private ingredients: Ingredient[]= [
         new Ingredient('Apples',5),
         new Ingredient('Tomatoes',10),
@@ -14,6 +21,10 @@ export class ShoppingListService {
 
     getIngredients(){
         return this.ingredients.slice();
+    }
+
+    getIngredient(index: number) {
+        return this.ingredients[index];
     }
 
     addIngredient(ingredient: Ingredient) {
@@ -32,4 +43,13 @@ export class ShoppingListService {
         this.ingredientsChanged.next(this.ingredients.slice());
     }
 
+    updateIngredient(index: number, newIngredient: Ingredient) {
+        this.ingredients[index] = newIngredient;
+        this.ingredientsChanged.next(this.ingredients.slice());
+    }
+
+    deleteIngredient(index: number) {
+        this.ingredients.splice(index,1);//remove the ingredient at index
+        this.ingredientsChanged.next(this.ingredients.slice());
+    }
 }
