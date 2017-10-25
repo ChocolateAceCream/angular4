@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-xs-12">
+<!--passing recipeForm to formGroup directive through property binding, this
+        will tell angular our overall form will be managed by us -->
+        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-xs-12 button">
+                    <button
+                        type="submit"
+                        class="btn btn-success"
+                        [disabled]="!recipeForm.valid">Save</button>
+                    <button type="button" class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input
+                        type="text"
+                        id="name"
+                        formControlName="name"
+                        class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="imagePath">Image URL</label>
+                        <input
+                        type="text"
+                        id="imagePath"
+                        formControlName="imagePath"
+                        class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <img src="" class="img-responsive">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea
+                            type="text"
+                            id="description"
+                            formControlName="description"
+                            class="form-control"
+                            rows="6">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!--bind the formArrayName directive to ingredinets form array-->
+                <div class="col-xs-12" formArrayName="ingredients">
+                    <!--since we didn't assign formGroupName in our ts file. we
+                    need to loop thorugh the ingredients formArray to get the
+                    name'
+
+                   use recipeForm.get() method to get ingredients control, then
+                   loop all controls of it
+                    -->
+                    <!--The controls  call was added since we're using a
+                    FormArray here which actually holds multiple controls.
+                    controls is a property which allows us to access all these
+                    controls. -->
+                    <div
+                        class="row"
+                        *ngFor="let ingredientsCtrl of
+                        recipeForm.get('ingredients').controls; let i = index"
+                        [formGroupName]="i"
+                        style="margin-top: 10px;"
+                        >
+                        <div class="col-xs-8">
+                            <input
+                            type="text"
+                            class="form-control"
+                            formControlName="name">
+                        </div>
+                        <div class="col-xs-2">
+                            <input
+                            type="number"
+                            class="form-control"
+                            formControlName="amount">
+                        </div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-danger">X</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button class="btn btn-success" type="button" (click)="onAddIngredient()">Add Ingredient</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
