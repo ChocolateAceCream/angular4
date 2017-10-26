@@ -1,7 +1,8 @@
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RecipeService } from '../recipe.service';
+//import { Recipe } from '../recipe.model'
 
 @Component({
     selector: 'app-recipe-edit',
@@ -12,8 +13,11 @@ export class RecipeEditComponent implements OnInit {
     id: number;
     editMode = false;
     recipeForm: FormGroup;
-    constructor(private route: ActivatedRoute,
-                private recipeService: RecipeService) { }
+    constructor(
+        private route: ActivatedRoute,
+        private recipeService: RecipeService
+        private router: Route) {
+    }
     ngOnInit() {
         //retrive the id
         this.route.params
@@ -31,7 +35,28 @@ export class RecipeEditComponent implements OnInit {
     }
 
     onSubmit() {
-        console.log(this.recipeForm);
+        //update recipe array
+        /*
+        const newRecipe = new Recipe(
+            this.recipeForm.value['name']
+            this.recipeForm.value['description'],
+            this.recipeForm.value['imagePath'],
+            this.recipeForm.value['ingredients']);
+         */
+        //we can also use the reactive feature to pass this.recipeForm.value
+        //directly into the updateRecipe method, since it will keep the same
+        //format
+        if (this.editMode) {
+            this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+        } else {
+            this.recipeService.addRecipe(this.recipeForm.value);
+        }
+        //however, this won't be enough, since we only push to the copy of original
+        //recipe array(recipe.slice) so in order to update the original array,
+        //we need to add a subject in recipe.service
+
+        this.onCancel();
+        //navigate away when done submition
     }
 
     onAddIngredient() {
@@ -52,6 +77,13 @@ export class RecipeEditComponent implements OnInit {
                 ])
             })
         );
+    }
+
+    onCancel() {
+        //go up one level. need to tell angular our current route, since we
+        //already inject the active router, we can simply pass the this.route as
+        //second argument
+        this.router.navigate(['../'], {relativeTo: this.route});
     }
 
     //initializing form
