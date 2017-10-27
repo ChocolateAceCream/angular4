@@ -33,13 +33,16 @@
                         type="text"
                         id="imagePath"
                         formControlName="imagePath"
-                        class="form-control">
+                        class="form-control"
+                        #imagePath>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <img src="" class="img-responsive">
+                    <!--binding src to local reference imagePath to retrive the
+                    value of control-->
+                    <img [src]="imagePath.value" class="img-responsive">
                 </div>
             </div>
             <div class="row">
@@ -90,7 +93,10 @@
                             formControlName="amount">
                         </div>
                         <div class="col-xs-2">
-                            <button class="btn btn-danger">X</button>
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                (click)="onDeleteIngredient(i)">X</button>
                         </div>
                     </div>
                     <hr>

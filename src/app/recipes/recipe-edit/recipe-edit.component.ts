@@ -15,8 +15,8 @@ export class RecipeEditComponent implements OnInit {
     recipeForm: FormGroup;
     constructor(
         private route: ActivatedRoute,
-        private recipeService: RecipeService
-        private router: Route) {
+        private recipeService: RecipeService,
+        private router: Router) {
     }
     ngOnInit() {
         //retrive the id
@@ -77,6 +77,12 @@ export class RecipeEditComponent implements OnInit {
                 ])
             })
         );
+    }
+
+    onDeleteIngredient(index: number) {
+        //removeAt(index: number): void
+        //Remove the control at the given index in the array.
+        (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
     }
 
     onCancel() {
