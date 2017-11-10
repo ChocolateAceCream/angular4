@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
+import { DataStorageService } from './shared/data-storage.service';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -39,7 +40,7 @@ import { RecipeService } from './recipes/recipe.service';
         FormsModule,
         HttpModule
     ],
-    providers: [ShoppingListService, RecipeService],
+    providers: [ShoppingListService, RecipeService, DataStorageService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

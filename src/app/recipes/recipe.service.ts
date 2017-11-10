@@ -32,6 +32,15 @@ export class RecipeService {
 
     constructor( private shoppingListService: ShoppingListService) {}
 
+    //used with getRecipe method in data-storage.service.ts
+    //after get recipes which returned from getRecipe method in data-stored, we
+    //replace/set the recipes to the array of returned recipes, then we call
+    //recipesChanged method to pass the updated recipe to whoever interseted
+    setRecipes(recipes: Recipe[]) {
+        this.recipes = recipes;
+        this.recipeChanged.next(this.recipes.slice());
+    }
+
     getRecipes() {  //method to access to the array of recipes from outside.
         // if return like this:
         // return this.recipes;
@@ -67,4 +76,5 @@ export class RecipeService {
        this.recipes.splice(index,1);
        this.recipeChanged.next(this.recipes.slice());
     }
+
 }
