@@ -1,8 +1,8 @@
 import { Recipe } from '../recipes/recipe.model';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Response,Headers,Http } from '@angular/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Response } from '@angular/http';
+import 'rxjs/Rx';
 //inject http service into this service
 @Injectable()
 export class DataStorageService {
@@ -19,12 +19,31 @@ export class DataStorageService {
     }
 
     getRecipes() {
-        this.http.get('https://superhacker-dc8b8.firebaseio.com/')
-            .subscribe(
+        this.http.get('https://superhacker-dc8b8.firebaseio.com/recipes.json')
+            .map(
                 (response: Response) => {
                     const recipes: Recipe[] = response.json();
                     //pass recipes fetched from server to recipeService, then
                     //from there to whoever interested to listen
+                    //
+                    //loop through the recipes to check if every recipes has ingredient property.
+                    for(let recipe of recipes) {
+                        //
+                        //if no ingredient presented
+                        if (!recipe['ingredients']) {
+                            //now it still doesnt have ingredient, but now it
+                            //has ingredient property empty array
+                            recipe.ingredients = [];
+                            //backet notation also works
+                            //recipe['ingredients'] = [];
+                        }
+                    }
+                    return recipes;
+                }
+            )
+            .subscribe(
+                //now we getting back recipes from map
+                (recipes: Recipe[]) => {
                     this.recipeService.setRecipes(recipes);
 
                 }

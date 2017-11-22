@@ -109,6 +109,7 @@ export class RecipeEditComponent implements OnInit {
             recipeImagePath = recipe.imagePath;
             recipeDescription = recipe.description;
             //if my recipe loaded has ingredients
+            //we didnt check the case if no ingredients presented.
             if (recipe['ingredients']) {
                 for (let ingredient of recipe.ingredients) {
                     //push all ingredients into recipeIngredients FormArray

@@ -7,6 +7,8 @@ import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.compon
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 
+import { SignupComponent } from './auth/signup/signup.component';
+
 const appRoutes: Routes = [
     //only redirect if the full path matched ''
     { path: '', redirectTo: '/recipes', pathMatch: 'full' },
@@ -21,7 +23,8 @@ const appRoutes: Routes = [
         //component
         { path: ':id/edit', component: RecipeEditComponent }
     ] },
-    { path: 'shopping-list', component: ShoppingListComponent }
+    { path: 'shopping-list', component: ShoppingListComponent },
+    { path: 'signup', component: SignupComponent }
 ];
 
 //transcript the normal typescript class inro module
