@@ -10,6 +10,8 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 
+import { AuthGuard } from './auth/auth-guard.service';
+
 const appRoutes: Routes = [
     //only redirect if the full path matched ''
     { path: '', redirectTo: '/recipes', pathMatch: 'full' },
@@ -18,11 +20,11 @@ const appRoutes: Routes = [
         //since  the :id is before new, when URL is localhost/recipe/new,
         //angular will resolve 'new' as :id params...then error happened
         //solution is reverse new and :id
-        { path: 'new', component: RecipeEditComponent },
+        { path: 'new', component: RecipeEditComponent, canActivate: [AuthGuard] },
         { path: ':id', component: RecipeDetailComponent },
         //will determine whether we want to edit or add component inside edit
         //component
-        { path: ':id/edit', component: RecipeEditComponent }
+        { path: ':id/edit', component: RecipeEditComponent,canActivate: [AuthGuard] }
     ] },
     { path: 'shopping-list', component: ShoppingListComponent },
     { path: 'signup', component: SignupComponent },

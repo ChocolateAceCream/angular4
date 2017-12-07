@@ -19,5 +19,15 @@ export class SigninComponent implements OnInit {
         const password = form.value.password;
         this.authService.signinUser(email, password);
     }
+        /*
+    getToken() {
+        //JWT was stored in local storage, under user object, which can be
+        //retrived here
+        //getToekn method will first inspect the token from local storage, if
+        //token expired, it will retrieve a new one from server.therefore, it's
+        //a asychromized process,and actually return a promise.
+        return firebase.auth().currentUser.getToken()
+    }
+         */
 
 }
