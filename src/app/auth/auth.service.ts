@@ -49,14 +49,14 @@ export class AuthService {
 
     isAuthenticated() {
         return this.token != null;
-    }
-
         //firebase will clean the local storage itself, but we need to reset the
         //token
+    }
+
+    logout() {
         firebase.auth().signOut();
         this.router.navigate(['/']);
         this.token = null;
-    logout() {
     }
 
 }
