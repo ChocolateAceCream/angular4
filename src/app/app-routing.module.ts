@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, PreloadAllModules, RouterModule } from '@angular/router';
 import { HomeComponent } from './core/home/home.component';
 import { AuthGuard } from './auth/auth-guard.service';
 
@@ -28,7 +28,12 @@ const appRoutes: Routes = [
 
 //transcript the normal typescript class inro module
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)],
+    //preloadingStrategy take a param as argument, default is not preloading any
+    //modules. now set it to PreloadAllModules make the app preloading all lazy
+    //loaded modules.
+    //
+    //preloading lazy loaded routes means when use first visit your app, lazy loaded features are not loaded, then after use starting using other features, now start preloading the lazy loaded features.
+    imports: [RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})],
     //add our routes to angular router. remember to import RouterModule from
     //angular router
     exports: [RouterModule]
