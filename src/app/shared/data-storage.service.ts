@@ -1,6 +1,6 @@
 import { Recipe } from '../recipes/recipe.model';
 import { Injectable } from '@angular/core';
-import { Response,Headers,Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { AuthService } from '../auth/auth.service';
 import 'rxjs/Rx';
@@ -9,7 +9,7 @@ import 'rxjs/Rx';
 export class DataStorageService {
     //inject Http service and Recipe in order to reach Recipe and http method
     constructor(
-        private http: Http,
+        private httpClient: HttpClient,
         private recipeService: RecipeService,
         private authService: AuthService
     ) {}
@@ -18,9 +18,14 @@ export class DataStorageService {
         const token = this.authService.getToken();
         //since we will get back an observable from http.put, we also need to
         //return this observable.
-        return this.http.put(
+        //
+        //replace http with httpClient, httpClient stil have a put method
+        return this.httpClient.put(
             'https://superhacker-dc8b8.firebaseio.com/recipes.json?auth=' + token,
-            this.recipeService.getRecipes()
+            this.recipeService.getRecipes(), {
+                //observe: 'events'
+                observe: 'body'
+            }
         );
     }
 
@@ -35,10 +40,24 @@ export class DataStorageService {
              */
         //add an auth query params in URL
         const token = this.authService.getToken();
-        this.http.get('https://superhacker-dc8b8.firebaseio.com/recipes.json?auth=' + token)
+        //get method is generic, so we can tell the httpClient which type of
+        //data we getting back, now we know we getting back Recpie[], so we can
+        //use:
+        //alternativly we can write (recipes: Recipe[]) inside map method.
+        this.httpClient.get<Recipe[]>('https://superhacker-dc8b8.firebaseio.com/recipes.json?auth=' + token, {
+            observe: 'body',
+            responseType: 'json',
+            //those tow arguments from the second argument in get method are
+            //default setting of get method, which return the response body in
+            //type of json.
+        })
             .map(
-                (response: Response) => {
-                    const recipes: Recipe[] = response.json();
+                /*
+                #(response: Response) => {
+                   # const recipes: Recipe[] = response.json();
+                now httpClient can explicily define the type of response, and we don;t need to extract json from response body,  however, if we want to override this reponse to get raw response, we can do so
+                 */
+                (recipes) => {
                     //pass recipes fetched from server to recipeService, then
                     //from there to whoever interested to listen
                     //
