@@ -1,6 +1,6 @@
 import { Recipe } from '../recipes/recipe.model';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders, HttpParams } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { AuthService } from '../auth/auth.service';
 import 'rxjs/Rx';
@@ -15,18 +15,46 @@ export class DataStorageService {
     ) {}
 
     storeRecipes() {
-        const token = this.authService.getToken();
+        //example of setting headers:
+        //const headers = new HttpHeaders().set('Authorization', 'Bearer some_token').append('Header_name', 'Value');
+
+        //const token = this.authService.getToken();
+
         //since we will get back an observable from http.put, we also need to
         //return this observable.
         //
         //replace http with httpClient, httpClient stil have a put method
+
+        /*
         return this.httpClient.put(
-            'https://superhacker-dc8b8.firebaseio.com/recipes.json?auth=' + token,
-            this.recipeService.getRecipes(), {
+            'https://superhacker-dc8b8.firebaseio.com/recipes.json',
+            this.recipeService.getRecipes(),
+            //append a JS object inside put method for custerming
+            {
+                //add/modify headers:
+                //headers: headers,
+
                 //observe: 'events'
-                observe: 'body'
+                observe: 'body', //this is the default setting of observe
+
+                //add query params:
+                params: new HttpParams().set('auth', token)
+                //this will set query url to:
+                //'https://superhacker-dc8b8.firebaseio.com/recipes.json?auth'+token
+
             }
         );
+
+         */
+
+        //listen to progress of response made(usually for uploading/downloading
+        //process)
+
+        const req = new HttpRequest('PUT','https://superhacker-dc8b8.firebaseio.com/recipes.json',this.recipeService.getRecipes(), {reportProgress: true})
+
+        //we create a req but haven't use it, now we can use it this way, return
+        //a observable as before.
+        return this.httpClient.request(req);
     }
 
     getRecipes() {
@@ -44,7 +72,7 @@ export class DataStorageService {
         //data we getting back, now we know we getting back Recpie[], so we can
         //use:
         //alternativly we can write (recipes: Recipe[]) inside map method.
-        this.httpClient.get<Recipe[]>('https://superhacker-dc8b8.firebaseio.com/recipes.json?auth=' + token, {
+        this.httpClient.get<Recipe[]>('https://superhacker-dc8b8.firebaseio.com/recipes.json', {
             observe: 'body',
             responseType: 'json',
             //those tow arguments from the second argument in get method are
