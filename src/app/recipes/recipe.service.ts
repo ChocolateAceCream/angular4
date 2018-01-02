@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
+//now using NgRx, no need of shoppinglist service
+//import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs/Subject';
 
-@Injectable()
 export class RecipeService {
     recipeChanged = new Subject<Recipe[]>();
     //recipeSelected = new EventEmitter<Recipe>();//public method, hold Recipe ddtype of data
@@ -29,8 +27,14 @@ export class RecipeService {
             ]
         )
     ];
+    constructor() {}
+    /* moved to recipe-detail.component
+    constructor(
+        //private shoppingListService: ShoppingListService,
+        private store: Store<{shoppingList: {ingredients: Ingredient[]}}>
 
-    constructor( private shoppingListService: ShoppingListService) {}
+    ) {}
+     */
 
     //used with getRecipe method in data-storage.service.ts
     //after get recipes which returned from getRecipe method in data-stored, we
@@ -58,9 +62,12 @@ export class RecipeService {
         return this.recipes[index];
     }
 
+        /*
     addIngredientsToShoppingList(ingredients: Ingredient[]){
+        this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients))
           this.shoppingListService.addIngredients(ingredients);
     }
+         */
 
     addRecipe(recipe: Recipe) {
        this.recipes.push(recipe);

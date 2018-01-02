@@ -3,6 +3,10 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 
+import { Store } from '@ngrx/store';
+import * as ShoppingListActions from '../../shopping-list/store/shopping-list.actions';
+import * as fromShoppingList from '../../shopping-list/store/shopping-list.reducers';
+
 @Component({
     selector: 'app-recipe-detail',
     templateUrl: './recipe-detail.component.html',
@@ -11,10 +15,13 @@ import { RecipeService } from '../recipe.service';
 export class RecipeDetailComponent implements OnInit {
     recipe: Recipe;
     id: number;
-    constructor( private recipeService: RecipeService,
+    constructor(
+        private recipeService: RecipeService,
         private route: ActivatedRoute,
-        private router: Router) {
-    }
+        private router: Router,
+        //private store: Store<{shoppingList: {ingredients: Ingredient[]}}>
+        private store: Store<fromShoppingList.AppState>
+    ){}
 
     ngOnInit() {
         //since we need to change id from inside the page, this approach is not
@@ -31,8 +38,10 @@ export class RecipeDetailComponent implements OnInit {
         //after destroy the component.
     }
     onAddToShoppingList() {
-        //suit
-        this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+        //now we use state store instead of service
+        //this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+
+        this.store.dispatch(new ShoppingListActions.AddIngredients(this.recipe.ingredients))
     }
     onEditRecipe(){
         this.router.navigate(['edit'], {relativeTo: this.route});

@@ -9,7 +9,7 @@ import { AuthGuard } from '../auth/auth-guard.service';
 import { AuthService } from '../auth/auth.service';
 import { RecipeService } from '../recipes/recipe.service';
 import { DataStorageService } from '../shared/data-storage.service';
-import { ShoppingListService} from '../shopping-list/shopping-list.service';
+//import { ShoppingListService} from '../shopping-list/shopping-list.service';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../shared/auth.interceptor';
@@ -31,7 +31,7 @@ import { LoggingInterceptor } from '../shared/logging.interceptor';
     ],
     providers: [
         AuthService,
-        ShoppingListService,
+        //ShoppingListService,
         RecipeService,
         AuthGuard,
         //since we only use AuthGuard in recipe module, we can move it to

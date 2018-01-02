@@ -19,9 +19,11 @@ export class ShoppingListService {
         new Ingredient('Tomatoes',10),
     ];
 
+    /*now we use NgRx
     getIngredients(){
         return this.ingredients.slice();
     }
+     */
 
     getIngredient(index: number) {
         return this.ingredients[index];
