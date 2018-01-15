@@ -1,6 +1,7 @@
 import { Store } from '@ngrx/store';
-import * as fromShoppingList from './store/shopping-list.reducers';
+//mport * as fromShoppingList from './store/shopping-list.reducers';
 import * as ShoppingListActions from './store/shopping-list.actions';
+import * as fromApp from '../store/app.reducers';
 
 import { Component, OnInit } from '@angular/core';
 //import { Subscription } from 'rxjs/Subscription';
@@ -37,7 +38,7 @@ export class ShoppingListComponent implements OnInit{
         //object
 
         //private store: Store<{shoppingList: {ingredients: Ingredient[]}}>
-        private store: Store<fromShoppingList.AppState>
+        private store: Store<fromApp.AppState>
 
     ) { }
 

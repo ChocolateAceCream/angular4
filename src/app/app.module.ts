@@ -11,6 +11,9 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { StoreModule } from '@ngrx/store';
 import { shoppingListReducer } from './shopping-list/store/shopping-list.reducers';
+import { reducers } from './store/app.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './auth/store/auth.effects';
 
 @NgModule({
     declarations: [
@@ -26,8 +29,13 @@ import { shoppingListReducer } from './shopping-list/store/shopping-list.reducer
         RecipesModule,
         //forRoot only works for eagerly loaded module, not for lazy load module
         //angular will set up a store and register a global state shoppingList
-        StoreModule.forRoot({shoppingList: shoppingListReducer}),
-        CoreModule
+        StoreModule.forRoot(reducers),
+        CoreModule,
+
+        //pass an array of effects which we want to use
+        //now we hook up our module and NgRx was able to analyze our store,
+        //inject actions into effect class in the array
+        EffectsModule.forRoot([AuthEffects])
     ],
     bootstrap: [AppComponent]
 })

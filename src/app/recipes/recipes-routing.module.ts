@@ -33,6 +33,9 @@ const recipesRoutes: Routes = [
     ],
     //also need exports the RouterModule which have our recipes Routers
     //registered,
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers: [
+        AuthGuard
+    ]
 })
 export class RecipesRoutingModule {}

@@ -2,7 +2,7 @@ import { Recipe } from '../recipes/recipe.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpHeaders, HttpParams } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { AuthService } from '../auth/auth.service';
+//import { AuthService } from '../auth/auth.service';
 import 'rxjs/Rx';
 //inject http service into this service
 @Injectable()
@@ -11,7 +11,7 @@ export class DataStorageService {
     constructor(
         private httpClient: HttpClient,
         private recipeService: RecipeService,
-        private authService: AuthService
+        //private authService: AuthService
     ) {}
 
     storeRecipes() {
@@ -67,7 +67,9 @@ export class DataStorageService {
             );
              */
         //add an auth query params in URL
-        const token = this.authService.getToken();
+        //
+        //const token = this.authService.getToken();
+        //
         //get method is generic, so we can tell the httpClient which type of
         //data we getting back, now we know we getting back Recpie[], so we can
         //use:

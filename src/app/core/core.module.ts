@@ -6,7 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 
 import { AuthGuard } from '../auth/auth-guard.service';
-import { AuthService } from '../auth/auth.service';
+//import { AuthService } from '../auth/auth.service';
 import { RecipeService } from '../recipes/recipe.service';
 import { DataStorageService } from '../shared/data-storage.service';
 //import { ShoppingListService} from '../shopping-list/shopping-list.service';
@@ -30,10 +30,10 @@ import { LoggingInterceptor } from '../shared/logging.interceptor';
         HeaderComponent //since we used a selector of HeaderComponent in app.component.html(app-header tag)
     ],
     providers: [
-        AuthService,
+        //AuthService,
         //ShoppingListService,
         RecipeService,
-        AuthGuard,
+        //AuthGuard,
         //since we only use AuthGuard in recipe module, we can move it to
         //recipes-routing module, where we use it. also, there's nothing worng
         //to provice the authGuard service here, application wise.

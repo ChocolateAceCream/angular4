@@ -1,5 +1,6 @@
 import * as ShoppingListActions from '../store/shopping-list.actions';
-import * as fromShoppingList from '../store/shopping-list.reducers';
+//import * as fromShoppingList from '../store/shopping-list.reducers';
+import * as fromApp from '../../store/app.reducers';
 
 import { Store } from '@ngrx/store';
 import {
@@ -32,11 +33,13 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         //to the reducer file shoppingListReducer
         //
         //private store: Store<{shoppingList: {ingredients: Ingredient[]}}>
-        private store: Store<fromShoppingList.AppState>
+        private store: Store<fromApp.AppState>
     ) { }
 
     ngOnInit() {
         this.subscription = this.store.select('shoppingList')
+        //select gives you back a slice of data from the application state wrapped into an Observable.
+        //subscribe to a state from store
             .subscribe(
                 data => {
                     if(data.editedIngredientIndex > -1){

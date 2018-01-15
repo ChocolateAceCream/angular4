@@ -11,6 +11,7 @@ export const START_EDIT = 'START_EDIT';
 export const STOP_EDIT = 'STOP_EDIT';
 
 export class AddIngredient implements Action {
+    //type is a forced property of Action.
     readonly type = ADD_INGREDIENT;
     //not every action was required to have a payload. we can add property
     //payload:

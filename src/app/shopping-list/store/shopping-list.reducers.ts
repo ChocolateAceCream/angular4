@@ -4,10 +4,10 @@ import { Ingredient } from '../../shared/ingredient.model';
 //ShoppingListAction
 import * as ShoppingListActions from './shopping-list.actions';
 
-export interface AppState{
-    //the overall AppState made up from several pieces
-    shoppingList: State
-}
+//export interface AppState{
+//    //the overall AppState made up from several pieces
+//    shoppingList: State
+//}
 
 //create a initial state since first time running application there won't be any
 //current state
