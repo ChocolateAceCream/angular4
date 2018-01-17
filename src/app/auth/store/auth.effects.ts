@@ -38,7 +38,7 @@ export class AuthEffects {
         })
         .switchMap(() => {
             //fetch the token after signup
-            return fromPromise(firebase.auth().currentUser.getToken());
+            return fromPromise(firebase.auth().currentUser.getIdToken());
         })
         //since we need an obervable, we use map to convert the token string to obervable
         //since we want to dispatch multiple action, we use merge map to convert
@@ -70,7 +70,7 @@ export class AuthEffects {
             return fromPromise(firebase.auth().signInWithEmailAndPassword(authData.username, authData.password));
         })
         .switchMap(() => {
-            return fromPromise(firebase.auth().currentUser.getToken());
+            return fromPromise(firebase.auth().currentUser.getIdToken());
         })
         .mergeMap((token: string) => {
             this.router.navigate(['/']);

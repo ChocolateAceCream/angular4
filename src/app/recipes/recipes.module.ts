@@ -11,6 +11,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RecipesRoutingModule } from './recipes-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { recipeReducer } from './store/recipe.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { RecipeEffects } from './store/recipe.effects';
 @NgModule({
     declarations: [
         RecipesComponent,
@@ -28,7 +32,12 @@ import { SharedModule } from '../shared/shared.module';
         //etc..
         CommonModule,
         SharedModule,
-        RecipesRoutingModule
+        RecipesRoutingModule,
+        //recipes is the name of our feature, then we add our reducers
+        //now this feature(state) will be dynamicly add to app.module whenever
+        //recipe.module get loaded.
+		StoreModule.forFeature('recipes',recipeReducer),
+        EffectsModule.forFeature([RecipeEffects]),
     ]
 })
 export class RecipesModule {}

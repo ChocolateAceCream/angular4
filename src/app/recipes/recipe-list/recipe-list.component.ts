@@ -1,24 +1,27 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Recipe } from '../recipe.model';
-import { RecipeService } from '../recipe.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import * as fromRecipe from '../store/recipe.reducers';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'app-recipe-list',
     templateUrl: './recipe-list.component.html',
     styleUrls: ['./recipe-list.component.css']
 })
-export class RecipeListComponent implements OnInit, OnDestroy {
-    recipes: Recipe[];
-    subscription: Subscription;
+export class RecipeListComponent implements OnInit {
+    //
+    recipeState: Observable<fromRecipe.State>;
 
-    constructor( private recipeService: RecipeService,
+    constructor(
                 private router: Router,
         //to use the relative route
-                private route: ActivatedRoute) { }
+                private route: ActivatedRoute,
+                private store: Store<fromRecipe.RecipeState>
+    ) { }
 
     ngOnInit() {
+            /*
         //listen to the recipeChanged event in recipeService, update this.recipe
         //with new recipe array received
         this.subscription = this.recipeService.recipeChanged
@@ -28,15 +31,17 @@ export class RecipeListComponent implements OnInit, OnDestroy {
                 }
             );
         this.recipes = this.recipeService.getRecipes();
+            */
+
+        //'recipes' is the name we used inside recipes.module, import array,
+        //forFeature operator
+        //StoreModule.forFeature('recipes',recipeReducer)
+        this.recipeState = this.store.select('recipes');
     }
 
     onNewRecipe() {
         //since we already in localhost/recipe, we use relative route to
         //navigate to localhost/recipe/new
         this.router.navigate(['new'], {relativeTo: this.route});
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
     }
 }

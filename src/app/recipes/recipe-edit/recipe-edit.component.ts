@@ -1,8 +1,11 @@
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { RecipeService } from '../recipe.service';
+//import { RecipeService } from '../recipe.service';
 //import { Recipe } from '../recipe.model'
+import * as fromRecipe from '../store/recipe.reducers';
+import * as RecipeActions from '../store/recipe.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'app-recipe-edit',
@@ -15,7 +18,8 @@ export class RecipeEditComponent implements OnInit {
     recipeForm: FormGroup;
     constructor(
         private route: ActivatedRoute,
-        private recipeService: RecipeService,
+        //private recipeService: RecipeService,
+        private store: Store<fromRecipe.RecipeState>,
         private router: Router) {
     }
     ngOnInit() {
@@ -47,9 +51,14 @@ export class RecipeEditComponent implements OnInit {
         //directly into the updateRecipe method, since it will keep the same
         //format
         if (this.editMode) {
-            this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+            //this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+            this.store.dispatch(new RecipeActions.UpdateRecipe({
+                index: this.id,
+                updatedRecipe: this.recipeForm.value
+            }));
         } else {
-            this.recipeService.addRecipe(this.recipeForm.value);
+            //this.recipeService.addRecipe(this.recipeForm.value);
+            this.store.dispatch(new RecipeActions.AddRecipe(this.recipeForm.value));
         }
         //however, this won't be enough, since we only push to the copy of original
         //recipe array(recipe.slice) so in order to update the original array,
@@ -108,32 +117,39 @@ export class RecipeEditComponent implements OnInit {
         if (this.editMode) {
             //if in edit mode, we load the recipe name from recipe service with
             //the given ID
-            const recipe = this.recipeService.getRecipe(this.id);
-            recipeName = recipe.name;
-            recipeImagePath = recipe.imagePath;
-            recipeDescription = recipe.description;
-            //if my recipe loaded has ingredients
-            //we didnt check the case if no ingredients presented.
-            if (recipe['ingredients']) {
-                for (let ingredient of recipe.ingredients) {
-                    //push all ingredients into recipeIngredients FormArray
-                    recipeIngredients.push(
-                        new FormGroup({
-                            //create new formgroup with defualt value of name
-                            //and amount for the ingredient
-                            'name': new FormControl(ingredient.name,Validators.required),
-                            'amount': new FormControl(ingredient.amount,[
-                                Validators.required,
-                                //this validators actually executed, because we
-                                //need to pass the pattern to the factory to
-                                //generate the validator, then pass the
-                                //validator as a reference
-                                Validators.pattern(/^[1-9]+[0-9]*$/)
-                            ])
-                        })
-                    );
-                }
-            }
+            //const recipe = this.recipeService.getRecipe(this.id);
+            this.store.select('recipes')
+                .take(1)
+                .subscribe(
+                    (recipeState: fromRecipe.State) => {
+                        const recipe = recipeState.recipes[this.id];
+                        recipeName = recipe.name;
+                        recipeImagePath = recipe.imagePath;
+                        recipeDescription = recipe.description;
+                        //if my recipe loaded has ingredients
+                        //we didnt check the case if no ingredients presented.
+                        if (recipe['ingredients']) {
+                            for (let ingredient of recipe.ingredients) {
+                                //push all ingredients into recipeIngredients FormArray
+                                recipeIngredients.push(
+                                    new FormGroup({
+                                        //create new formgroup with defualt value of name
+                                        //and amount for the ingredient
+                                        'name': new FormControl(ingredient.name,Validators.required),
+                                        'amount': new FormControl(ingredient.amount,[
+                                            Validators.required,
+                                            //this validators actually executed, because we
+                                            //need to pass the pattern to the factory to
+                                            //generate the validator, then pass the
+                                            //validator as a reference
+                                            Validators.pattern(/^[1-9]+[0-9]*$/)
+                                        ])
+                                    })
+                                );
+                            }
+                        }
+                    }
+                )
         }
 
         //FormGroup take key-value pair JS object with controls we want to

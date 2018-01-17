@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Recipe } from '../recipe.model';
-import { RecipeService } from '../recipe.service';
+//import { Recipe } from '../recipe.model';
+//import { RecipeService } from '../recipe.service';
 
 import { Store } from '@ngrx/store';
 import * as ShoppingListActions from '../../shopping-list/store/shopping-list.actions';
 //import * as fromShoppingList from '../../shopping-list/store/shopping-list.reducers';
-import * as fromApp from '../../store/app.reducers';
+//import * as fromApp from '../../store/app.reducers';
+import { Observable } from 'rxjs/Observable';
+import * as fromRecipe from '../store/recipe.reducers';
+import * as RecipeActions from '../store/recipe.actions';
+import 'rxjs/add/operator/take';
 
 @Component({
     selector: 'app-recipe-detail',
@@ -14,14 +18,19 @@ import * as fromApp from '../../store/app.reducers';
     styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-    recipe: Recipe;
+    recipeState: Observable<fromRecipe.State>;
     id: number;
     constructor(
-        private recipeService: RecipeService,
+        //private recipeService: RecipeService,
         private route: ActivatedRoute,
         private router: Router,
         //private store: Store<{shoppingList: {ingredients: Ingredient[]}}>
-        private store: Store<fromApp.AppState>
+        //private store: Store<fromApp.AppState>
+
+        private store: Store<fromRecipe.RecipeState>
+        //since we need to use the recipe state in ngOnInit and app
+        //state in toShoppingList, now we make fromRecipe extending fromApp, so
+        //that it can contain all state of the app
     ){}
 
     ngOnInit() {
@@ -32,7 +41,7 @@ export class RecipeDetailComponent implements OnInit {
             .subscribe(
                 (params: Params) => {
                     this.id = +params['id'];//+ convert string to number
-                    this.recipe = this.recipeService.getRecipe(this.id);
+                    this.recipeState = this.store.select('recipes');
                 }
             )
         //remember if we use our own observable, we need to manully cleanup
@@ -42,7 +51,13 @@ export class RecipeDetailComponent implements OnInit {
         //now we use state store instead of service
         //this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
 
-        this.store.dispatch(new ShoppingListActions.AddIngredients(this.recipe.ingredients))
+        this.store.select('recipes')
+            .take(1)
+            .subscribe(
+                (recipeState: fromRecipe.State) => {
+                    this.store.dispatch(new ShoppingListActions.AddIngredients(recipeState.recipes[this.id].ingredients))
+
+            });
     }
     onEditRecipe(){
         this.router.navigate(['edit'], {relativeTo: this.route});
@@ -52,7 +67,7 @@ export class RecipeDetailComponent implements OnInit {
 
     onDeleteRecipe() {
         //id was obtained from route
-        this.recipeService.deleteRecipe(this.id);
+        this.store.dispatch( new RecipeActions.DeleteRecipe(this.id));
         //after delete, navigate to recipes for better UX
         this.router.navigate(['/recipes']);
     }

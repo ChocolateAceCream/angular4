@@ -31,7 +31,7 @@ export class RecipeService {
     /* moved to recipe-detail.component
     constructor(
         //private shoppingListService: ShoppingListService,
-        private store: Store<{shoppingList: {ingredients: Ingredient[]}}>
+        private store: aasdfStore<{shoppingList: {ingredients: Ingredient[]}}>
 
     ) {}
      */

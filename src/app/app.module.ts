@@ -14,6 +14,9 @@ import { shoppingListReducer } from './shopping-list/store/shopping-list.reducer
 import { reducers } from './store/app.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth/store/auth.effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
     declarations: [
@@ -35,7 +38,12 @@ import { AuthEffects } from './auth/store/auth.effects';
         //pass an array of effects which we want to use
         //now we hook up our module and NgRx was able to analyze our store,
         //inject actions into effect class in the array
-        EffectsModule.forRoot([AuthEffects])
+        EffectsModule.forRoot([AuthEffects]),
+        StoreRouterConnectingModule,
+
+        //StoreDevtoolsModule has to be placed after StoreModule, and only used
+        //if app is not in environment mode, otherwise pass an empty array
+        !environment.production ? StoreDevtoolsModule.instrument() : []
     ],
     bootstrap: [AppComponent]
 })

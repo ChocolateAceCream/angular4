@@ -7,8 +7,8 @@ import { AppRoutingModule } from '../app-routing.module';
 
 import { AuthGuard } from '../auth/auth-guard.service';
 //import { AuthService } from '../auth/auth.service';
-import { RecipeService } from '../recipes/recipe.service';
-import { DataStorageService } from '../shared/data-storage.service';
+//import { RecipeService } from '../recipes/recipe.service';
+//import { DataStorageService } from '../shared/data-storage.service';
 //import { ShoppingListService} from '../shopping-list/shopping-list.service';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -32,12 +32,14 @@ import { LoggingInterceptor } from '../shared/logging.interceptor';
     providers: [
         //AuthService,
         //ShoppingListService,
-        RecipeService,
+        //RecipeService,
         //AuthGuard,
         //since we only use AuthGuard in recipe module, we can move it to
         //recipes-routing module, where we use it. also, there's nothing worng
         //to provice the authGuard service here, application wise.
-        DataStorageService,
+
+        //DataStorageService,
+
         //this tell angular what we provide here is HTTP_INTERCEPTORS, so
         //angular will send every outgoing request to this pipe line
         //also, we need to tell angular which interceptor we want to use, but
