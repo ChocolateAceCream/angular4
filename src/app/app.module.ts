@@ -23,7 +23,11 @@ import { environment } from '../environments/environment';
         AppComponent,
     ],
     imports: [
-        BrowserModule,
+        //adding .withServerTransition() to support Universal rendering, let
+        //angular know we first rendering the app in server, then shipped to
+        //browser by withServerTransition and appId was used internally to
+        //manager different versions of app.
+        BrowserModule.withServerTransition({appId: 'my-app'}),
         HttpClientModule,
         AppRoutingModule,
         SharedModule,

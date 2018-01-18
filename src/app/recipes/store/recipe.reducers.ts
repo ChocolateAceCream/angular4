@@ -38,7 +38,7 @@ const initialState: State = {
 };
 
 export function recipeReducer(state = initialState, action: RecipeActions.RecipeActions) {
-    switch (action.type) {
+    switch(action.type) {
         case (RecipeActions.SET_RECIPES):
             return {
                 ...state,
