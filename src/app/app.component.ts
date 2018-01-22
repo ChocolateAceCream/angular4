@@ -10,13 +10,17 @@ export class AppComponent implements OnInit {
     loadedFeature = 'recipe';
 
     ngOnInit() {
-        firebase.initializeApp({
-            //initializeApp method expect a JS object as argument
-            //apiKey and authDomain can be obtain from SETUP option in firebase
-            apiKey: "AIzaSyDcMU0KrsRXhixri73WpjvOiX1UYWweaMk",
-            authDomain: "superhacker-dc8b8.firebaseapp.com"
-            //finish initialize firebase
-        });
+        if(firebase.apps.length < 1)
+        {
+            firebase.initializeApp({
+                //initializeApp method expect a JS object as argument
+                //apiKey and authDomain can be obtain from SETUP option in firebase
+                apiKey: "AIzaSyDcMU0KrsRXhixri73WpjvOiX1UYWweaMk",
+                authDomain: "superhacker-dc8b8.firebaseapp.com"
+                //finish initialize firebase
+            });
+        }
+
     }
     onNavigate(feature: string) {
         this.loadedFeature = feature;
